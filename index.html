@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Biology 1 — Jefferson County Patriots</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Merriweather:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:       #0e1a12;
+  --bg2:      #121f16;
+  --surface:  #162b1c;
+  --card:     #1a3322;
+  --card2:    #162b1c;
+  --border:   #254d30;
+  --border2:  #2e5c38;
+  --green:    #52c97a;
+  --green2:   #3db368;
+  --green-dim:#1f6638;
+  --green-bg: rgba(82,201,122,.08);
+  --text:     #e4f0e8;
+  --text2:    #c2dbc9;
+  --muted:    #7aaa88;
+  --dim:      #3d6b4a;
+  --faint:    #2a4d32;
+  --slate:    #1e3028;
+  --warn:     rgba(245,200,66,.08);
+  --warn-bd:  rgba(245,200,66,.3);
+  --warn-txt: #e2b93b;
+
+  /* time badge colours — distinct but still green-family */
+  --t-short:  rgba(82,201,122,.12);    /* <45 min  — soft green  */
+  --t-med:    rgba(90,160,255,.12);    /* 45–60 min — soft blue  */
+  --t-long:   rgba(255,180,60,.1);     /* 60–90 min — soft amber */
+  --t-full:   rgba(212,32,48,.1);      /* full period / multi-day — soft red */
+
+  --t-short-txt: #6edfa0;
+  --t-med-txt:   #7ab8f5;
+  --t-long-txt:  #e2b93b;
+  --t-full-txt:  #f78a94;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lato',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.6;overflow-x:hidden;}
+
+/* ── HEADER ──────────────────────────────────── */
+header{background:var(--bg2);border-bottom:3px solid var(--green2);padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 500px 300px at 85% 50%,rgba(82,201,122,.06) 0%,transparent 65%),radial-gradient(ellipse 300px 400px at 5% 100%,rgba(82,201,122,.04) 0%,transparent 60%);pointer-events:none;}
+header::after{content:'• • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •';position:absolute;top:.6rem;left:0;right:0;font-size:.5rem;letter-spacing:.6rem;color:rgba(82,201,122,.07);white-space:nowrap;overflow:hidden;pointer-events:none;}
+.h-inner{position:relative;max-width:1060px;margin:0 auto;}
+.h-school{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--green);display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem;}
+.h-school::before{content:'';display:block;width:24px;height:1px;background:var(--green);}
+h1{font-family:'Merriweather',Georgia,serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.2;color:var(--text);margin-bottom:.6rem;}
+h1 em{font-style:italic;color:var(--green);}
+.h-sub{font-size:.92rem;font-weight:300;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:1.2rem;}
+.h-tags{display:flex;flex-wrap:wrap;gap:.45rem;}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:.28rem .8rem;border-radius:100px;border:1px solid var(--border2);color:var(--muted);background:rgba(82,201,122,.05);}
+
+/* ── STICKY NAV ──────────────────────────────── */
+.snav{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.35);}
+.snav-inner{max-width:1060px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 1.5rem;}
+.snav-inner::-webkit-scrollbar{display:none;}
+.nb{flex-shrink:0;padding:.78rem .95rem;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--muted);font-family:'Lato',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s;}
+.nb:hover{color:var(--text);}
+.nb.on{color:var(--green);border-bottom-color:var(--green);}
+
+/* ── MAIN ─────────────────────────────────────── */
+main{max-width:1060px;margin:0 auto;padding:2.5rem 1.5rem 6rem;}
+.sh{display:flex;align-items:center;gap:.9rem;margin-bottom:1.4rem;scroll-margin-top:58px;}
+.sh-n{font-family:'Merriweather',serif;font-size:1.9rem;font-weight:700;color:rgba(82,201,122,.12);line-height:1;min-width:2rem;}
+.sh-t{display:flex;flex-direction:column;}
+.sh-t small{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.1rem;}
+.sh-t strong{font-family:'Merriweather',serif;font-size:1.2rem;font-weight:700;color:var(--text);}
+.sh-line{flex:1;height:1px;background:var(--border);}
+
+/* ── ANNOUNCE ────────────────────────────────── */
+.announce{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.3rem;background:var(--green-bg);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:8px;margin-bottom:2rem;font-size:.86rem;}
+.announce strong{color:var(--green);}
+.announce p{color:var(--muted);line-height:1.6;}
+
+/* ── WARN BOX ────────────────────────────────── */
+.warn-box{padding:.9rem 1.2rem;border-radius:8px;font-size:.8rem;color:var(--warn-txt);line-height:1.6;background:var(--warn);border:1px solid var(--warn-bd);margin-bottom:1.2rem;}
+.warn-box strong{color:var(--warn-txt);}
+
+/* ── QUICK LINKS ─────────────────────────────── */
+.ql-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.85rem;margin-bottom:2.8rem;}
+.ql-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.15rem;text-decoration:none;color:inherit;display:block;transition:border-color .2s,transform .2s;}
+.ql-card:hover{border-color:var(--green2);transform:translateY(-2px);}
+.ql-icon{font-size:1.3rem;margin-bottom:.5rem;display:block;}
+.ql-title{font-weight:700;font-size:.86rem;color:var(--text);margin-bottom:.28rem;}
+.ql-desc{font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:.5rem;}
+.ql-link{font-size:.73rem;font-weight:700;color:var(--green);text-decoration:none;}
+
+/* ── TIME LEGEND ─────────────────────────────── */
+.time-legend{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
+  padding:.85rem 1.2rem;
+  background:var(--card2);border:1px solid var(--border);border-radius:9px;
+  margin-bottom:1.2rem;
+  font-size:.72rem;
+}
+.tl-label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-right:.2rem;}
+.tl-item{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.2rem .6rem;border-radius:5px;font-weight:700;font-size:.68rem;border:1px solid;
+}
+.tl-s{color:var(--t-short-txt);background:var(--t-short);border-color:rgba(82,201,122,.25);}
+.tl-m{color:var(--t-med-txt);  background:var(--t-med);  border-color:rgba(90,160,255,.25);}
+.tl-l{color:var(--t-long-txt); background:var(--t-long); border-color:rgba(255,180,60,.25);}
+.tl-f{color:var(--t-full-txt); background:var(--t-full); border-color:rgba(212,32,48,.25);}
+
+/* ── UNIT CARDS ──────────────────────────────── */
+.unit-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem;}
+.unit-trigger{display:flex;align-items:stretch;width:100%;background:none;border:none;cursor:pointer;text-align:left;font-family:inherit;color:inherit;padding:0;transition:background .15s;}
+.unit-trigger:hover{background:rgba(82,201,122,.025);}
+.u-bar{width:4px;flex-shrink:0;}
+.u-bar-1{background:#52c97a;}.u-bar-2{background:#3db368;}.u-bar-3{background:#2e9956;}.u-bar-4{background:#237d44;}
+.u-hd{flex:1;padding:1.15rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.u-num{font-family:'Merriweather',serif;font-size:1.8rem;font-weight:700;color:var(--faint);line-height:1;min-width:1.6rem;}
+.u-info{flex:1;min-width:200px;}
+.u-std{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--green);margin-bottom:.22rem;opacity:.8;}
+.u-title{font-family:'Merriweather',serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.22rem;}
+.u-phenom{font-size:.78rem;color:var(--muted);font-style:italic;line-height:1.4;}
+.u-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;flex-shrink:0;}
+.u-weeks{font-size:.7rem;color:var(--dim);font-weight:700;}
+.u-caret{font-size:.68rem;padding:.22rem .55rem;border:1px solid var(--border);border-radius:5px;color:var(--dim);transition:all .2s;}
+.unit-card.open .u-caret{color:var(--green);border-color:var(--border2);}
+.unit-body{border-top:1px solid var(--border);display:none;}
+.unit-card.open .unit-body{display:block;}
+.ub-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+@media(max-width:680px){.ub-grid{grid-template-columns:1fr;}}
+.ub-col{padding:1.3rem 1.5rem;}
+.ub-col+.ub-col{border-left:1px solid var(--border);}
+@media(max-width:680px){.ub-col+.ub-col{border-left:none;border-top:1px solid var(--border);}}
+.ub-head{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.85rem;}
+
+/* ── STANDARDS ───────────────────────────────── */
+.std-list{display:flex;flex-direction:column;gap:.38rem;}
+.std-row{display:flex;gap:.6rem;padding:.5rem .7rem;border-radius:6px;background:var(--card2);border:1px solid var(--border);font-size:.75rem;transition:border-color .2s;}
+.std-row:hover{border-color:var(--border2);}
+.std-code{font-weight:700;font-size:.67rem;color:var(--green);white-space:nowrap;min-width:9ch;padding-top:.05rem;font-family:monospace;}
+.std-desc{color:var(--muted);line-height:1.45;}
+
+/* ── LESSON ROWS — with time badge ───────────── */
+.lesson-list{display:flex;flex-direction:column;gap:.3rem;}
+.lesson-row{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem .75rem;border-radius:7px;
+  background:var(--card2);border:1px solid transparent;
+  font-size:.78rem;color:var(--muted);
+  text-decoration:none;transition:all .15s;
+  flex-wrap:wrap;
+}
+.lesson-row:hover{border-color:var(--border);color:var(--text);background:rgba(82,201,122,.04);}
+.l-icon{font-size:.88rem;flex-shrink:0;}
+.l-name{flex:1;min-width:140px;}
+
+/* TIME BADGE */
+.l-time{
+  flex-shrink:0;
+  font-size:.6rem;font-weight:700;
+  padding:.18rem .5rem;border-radius:4px;border:1px solid;
+  white-space:nowrap;
+  letter-spacing:.03em;
+}
+.lt-s{color:var(--t-short-txt);background:var(--t-short);border-color:rgba(82,201,122,.25);}  /* ≤45 min */
+.lt-m{color:var(--t-med-txt);  background:var(--t-med);  border-color:rgba(90,160,255,.25);}  /* 45–60 min */
+.lt-l{color:var(--t-long-txt); background:var(--t-long); border-color:rgba(255,180,60,.25);}  /* full 90-min period */
+.lt-f{color:var(--t-full-txt); background:var(--t-full); border-color:rgba(212,32,48,.25);}   /* multi-period */
+
+.l-type{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:.18rem .45rem;border-radius:4px;background:rgba(82,201,122,.05);border:1px solid var(--border);flex-shrink:0;}
+
+/* ── UNIT FOOTER ─────────────────────────────── */
+.u-foot{border-top:1px solid var(--border);padding:.85rem 1.5rem;display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;background:rgba(0,0,0,.08);}
+.u-foot-label{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:.15rem;}
+
+/* ── BUTTONS ─────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .85rem;border-radius:7px;font-size:.75rem;font-weight:700;border:1px solid var(--border2);color:var(--green);background:var(--green-bg);text-decoration:none;cursor:pointer;font-family:'Lato',sans-serif;transition:all .2s;}
+.btn:hover{background:rgba(82,201,122,.14);border-color:var(--green2);}
+.btn-ghost{color:var(--muted);border-color:var(--border);background:none;}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);}
+
+/* ── EOC CARDS ────────────────────────────────── */
+.eoc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;}
+.eoc-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.15rem 1.2rem;transition:border-color .2s,transform .2s;}
+.eoc-card:hover{border-color:var(--green2);transform:translateY(-2px);}
+.eoc-hd{display:flex;align-items:center;gap:.6rem;margin-bottom:.65rem;}
+.eoc-icon{font-size:1.2rem;}
+.eoc-title{font-weight:700;font-size:.86rem;color:var(--text);}
+.eoc-desc{font-size:.75rem;color:var(--muted);line-height:1.55;}
+.eoc-link{display:inline-flex;align-items:center;gap:.28rem;margin-top:.7rem;font-size:.74rem;font-weight:700;color:var(--green);text-decoration:none;}
+.eoc-link:hover{text-decoration:underline;}
+
+/* ── PACING TABLE ─────────────────────────────── */
+.pace-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.pace-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.pace-table th{background:var(--card2);padding:.65rem 1rem;text-align:left;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--dim);border-bottom:1px solid var(--border);}
+.pace-table td{padding:.78rem 1rem;border-bottom:1px solid rgba(37,77,48,.5);color:var(--muted);vertical-align:top;line-height:1.5;}
+.pace-table tr:last-child td{border-bottom:none;}
+.pace-table tr:nth-child(even) td{background:rgba(82,201,122,.015);}
+.pace-table td:first-child{color:var(--text);font-weight:700;white-space:nowrap;}
+.pace-table tr.q-hdr td{background:rgba(82,201,122,.07);color:var(--green);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.5rem 1rem;border-bottom:1px solid var(--border2);}
+.pd{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:.4rem;vertical-align:middle;opacity:.8;}
+.pd-2{opacity:.6;}.pd-3{opacity:.45;}.pd-4{opacity:.3;}
+
+/* ── GUIDE CARDS ─────────────────────────────── */
+.guide-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:.75rem;display:flex;gap:1rem;align-items:flex-start;}
+.guide-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--green-bg);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--green);margin-top:.1rem;}
+.guide-content{flex:1;}
+.guide-title{font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:.3rem;}
+.guide-desc{font-size:.78rem;color:var(--muted);line-height:1.55;}
+.guide-url{display:inline-block;margin-top:.4rem;font-size:.72rem;font-family:monospace;color:var(--green);background:var(--green-bg);border:1px solid var(--border2);padding:.2rem .5rem;border-radius:4px;word-break:break-all;}
+.guide-step{display:block;margin-top:.4rem;font-size:.74rem;color:var(--dim);font-style:italic;}
+
+/* ── TEACHER HUB ──────────────────────────────── */
+.teacher-hub{background:var(--slate);border:1px solid var(--border);border-radius:12px;padding:1.75rem 1.8rem;}
+.th-head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.3rem;flex-wrap:wrap;}
+.th-badge{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);padding:.25rem .7rem;background:rgba(82,201,122,.06);border:1px solid var(--border2);border-radius:100px;}
+.th-title{font-family:'Merriweather',serif;font-size:1.15rem;color:var(--text);}
+.th-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.8rem;}
+.th-card{background:rgba(82,201,122,.03);border:1px solid var(--border);border-radius:8px;padding:.95rem 1rem;transition:border-color .2s;}
+.th-card:hover{border-color:var(--border2);}
+.th-card-icon{font-size:1rem;margin-bottom:.4rem;}
+.th-card-title{font-weight:700;font-size:.83rem;color:var(--text2);margin-bottom:.28rem;}
+.th-card-desc{font-size:.73rem;color:var(--muted);line-height:1.5;}
+.th-card a{color:var(--green);font-weight:700;text-decoration:none;}
+.th-card a:hover{text-decoration:underline;}
+
+/* ── NOTE BOXES ───────────────────────────────── */
+.note{padding:.9rem 1.2rem;border-radius:8px;font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:.85rem;}
+.note-green{background:var(--green-bg);border:1px solid var(--border2);}
+.note strong{color:var(--green);}
+.note code{font-family:monospace;font-size:.73rem;background:rgba(82,201,122,.1);color:var(--green);padding:.1rem .35rem;border-radius:3px;}
+
+/* ── FOOTER ───────────────────────────────────── */
+footer{border-top:2px solid var(--border);padding:1.4rem 2rem;text-align:center;font-size:.73rem;color:var(--dim);}
+footer strong{color:var(--muted);}
+
+/* ── ANIMATIONS ───────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.unit-card{animation:fadeUp .35s ease both;}
+section{scroll-margin-top:52px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="h-inner">
+    <div class="h-school">Jefferson County High School · Biology Department · Go Patriots 🏈</div>
+    <h1>Biology 1 — <em>Understanding for Life</em></h1>
+    <p class="h-sub">BSCS <em>Understanding for Life</em> (Kendall Hunt). 2022 TN Biology 1 Standards. One semester · 90-minute block · 18 weeks.</p>
+    <div class="h-tags">
+      <span class="tag">🎯 2022 TN Bio 1 Standards</span>
+      <span class="tag">📖 BSCS Kendall Hunt — UFL</span>
+      <span class="tag">🔬 Anchored Inquiry Learning</span>
+      <span class="tag">📱 100% Paperless Ready</span>
+      <span class="tag">🏆 EOC Aligned</span>
+      <span class="tag">📅 1 Semester · 18 Weeks</span>
+    </div>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="snav">
+  <div class="snav-inner">
+    <button class="nb on"  onclick="go('home',this)">🏠 Home</button>
+    <button class="nb" onclick="go('unit1',this)">Unit 1</button>
+    <button class="nb" onclick="go('unit2',this)">Unit 2</button>
+    <button class="nb" onclick="go('unit3',this)">Unit 3</button>
+    <button class="nb" onclick="go('unit4',this)">Unit 4</button>
+    <button class="nb" onclick="go('eoc',this)">🎯 EOC Prep</button>
+    <button class="nb" onclick="go('pacing',this)">📅 Pacing</button>
+    <button class="nb" onclick="go('guide',this)">🔗 Link Guide</button>
+    <button class="nb" onclick="go('teacher',this)">🔑 Teacher Hub</button>
+  </div>
+</nav>
+
+<main>
+
+  <div class="announce">
+    <span style="font-size:1.1rem;flex-shrink:0;">📢</span>
+    <p><strong>Welcome, Patriots!</strong> This is your Biology 1 home base. Click any unit to find your lessons, labs, and assignments. Everything lives here in Canvas — no printing needed!</p>
+  </div>
+
+  <!-- ══ QUICK LINKS ══════════════════════════════════════ -->
+  <section id="home">
+    <div class="sh">
+      <div class="sh-n">00</div>
+      <div class="sh-t"><small>Getting Started</small><strong>Course Overview &amp; Quick Links</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="ql-grid">
+      <a class="ql-card" href="PASTE-SYLLABUS-LINK-HERE">
+        <span class="ql-icon">📋</span>
+        <div class="ql-title">Course Syllabus</div>
+        <div class="ql-desc">Grading policy, classroom norms, and course expectations.</div>
+        <span class="ql-link">View Syllabus →</span>
+      </a>
+      <a class="ql-card" href="https://www.flourishkh.com">
+        <span class="ql-icon">📖</span>
+        <div class="ql-title">Digital Textbook</div>
+        <div class="ql-desc">BSCS Understanding for Life — log in to Flourish / KH eBook.</div>
+        <span class="ql-link">Open eBook →</span>
+      </a>
+      <a class="ql-card" href="PASTE-ASSIGNMENTS-LINK-HERE">
+        <span class="ql-icon">📝</span>
+        <div class="ql-title">Submit Work</div>
+        <div class="ql-desc">Upload labs, notes, and projects directly in Canvas.</div>
+        <span class="ql-link">Go to Assignments →</span>
+      </a>
+      <a class="ql-card" href="PASTE-GRADES-LINK-HERE">
+        <span class="ql-icon">🏆</span>
+        <div class="ql-title">My Grades</div>
+        <div class="ql-desc">Track your scores and teacher feedback here.</div>
+        <span class="ql-link">View Grades →</span>
+      </a>
+      <a class="ql-card" href="PASTE-EOC-LINK-HERE">
+        <span class="ql-icon">🎯</span>
+        <div class="ql-title">EOC Prep Hub</div>
+        <div class="ql-desc">Practice questions sorted by TN standard — use all year!</div>
+        <span class="ql-link">EOC Prep →</span>
+      </a>
+      <a class="ql-card" href="PASTE-DISCUSSION-LINK-HERE">
+        <span class="ql-icon">💬</span>
+        <div class="ql-title">Class Discussion</div>
+        <div class="ql-desc">Post questions, share thinking, and collaborate here.</div>
+        <span class="ql-link">Discussion Board →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ TIME LEGEND ══════════════════════════════════════ -->
+  <div class="time-legend">
+    <span class="tl-label">⏱ Time Key:</span>
+    <span class="tl-item tl-s">🟢 Under 45 min</span>
+    <span class="tl-item tl-m">🔵 45–60 min</span>
+    <span class="tl-item tl-l">🟡 Full Period (90 min)</span>
+    <span class="tl-item tl-f">🔴 Multi-Period / Project</span>
+    <span style="font-size:.68rem;color:var(--dim);margin-left:.3rem;">All times based on 90-minute block schedule</span>
+  </div>
+
+  <!-- ══ UNIT 1 ════════════════════════════════════════════ -->
+  <section id="unit1">
+    <div class="sh">
+      <div class="sh-n">01</div>
+      <div class="sh-t"><small>Unit 1 · BIO1.LS1.1–1.7 · Q1 Wks 1–4</small><strong>How Can Bacterial Infections Make Us So Sick?</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="unit-card open">
+      <button class="unit-trigger" onclick="tog(this.closest('.unit-card'))">
+        <div class="u-bar u-bar-1"></div>
+        <div class="u-hd">
+          <div class="u-num">1</div>
+          <div class="u-info">
+            <div class="u-std">BIO1.LS1.1 · LS1.2 · LS1.3 · LS1.4 · LS1.5 · LS1.7</div>
+            <div class="u-title">Infectious Diseases</div>
+            <div class="u-phenom">🔍 Anchoring Phenomenon: <em>How can bacterial infections make us so sick — and why do some people get more ill than others?</em></div>
+          </div>
+          <div class="u-meta">
+            <div class="u-weeks">📅 Q1 · Wks 1–4 · ~20 class days</div>
+            <div class="u-caret">▲ Collapse</div>
+          </div>
+        </div>
+      </button>
+      <div class="unit-body">
+        <div class="ub-grid">
+          <!-- Standards col -->
+          <div class="ub-col">
+            <div class="ub-head">📌 TN 2022 Standards — Verified</div>
+            <div class="std-list">
+              <div class="std-row"><span class="std-code">LS1.1</span><span class="std-desc">Compare &amp; contrast characteristics of life. Argue whether viruses are non-living based on these characteristics.</span></div>
+              <div class="std-row"><span class="std-code">LS1.2</span><span class="std-desc">Evaluate comparative models of cell types with a focus on organic molecules that make up cellular structures.</span></div>
+              <div class="std-row"><span class="std-code">LS1.3</span><span class="std-desc">Develop a structural model of DNA; explain how DNA serves as a template for self-replication and encodes biological information.</span></div>
+              <div class="std-row"><span class="std-code">LS1.4</span><span class="std-desc">Demonstrate how DNA is decoded through transcription &amp; translation to synthesize proteins; examine RNA structure &amp; function.</span></div>
+              <div class="std-row"><span class="std-code">LS1.5</span><span class="std-desc">Research functional variety of proteins; plan and carry out a controlled investigation testing factors that affect protein structure &amp; function.</span></div>
+              <div class="std-row"><span class="std-code">LS1.7</span><span class="std-desc">Model a cell plasma membrane; compare types of cellular transport; test predictions about homeostasis of energy and matter in cells.</span></div>
+            </div>
+            <!-- Chapter map -->
+            <div style="margin-top:1rem;padding:.8rem 1rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;font-size:.75rem;">
+              <div style="font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.5rem;">📚 BSCS Chapters</div>
+              <div style="color:var(--muted);line-height:1.8;">
+                <strong style="color:var(--text2);">Ch. 1</strong> — How can bacteria cause infections?<br/>
+                <strong style="color:var(--text2);">Ch. 2</strong> — How does the body respond to infections?<br/>
+                <strong style="color:var(--text2);">Ch. 3</strong> — What explains the increasing incidence of antibiotic-resistant infections?
+              </div>
+            </div>
+          </div>
+          <!-- Lessons col -->
+          <div class="ub-col">
+            <div class="ub-head">🗂 Lessons, Labs &amp; Assignments · <span style="font-weight:400;font-style:italic;">times shown for 90-min block</span></div>
+            <div class="lesson-list">
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">1.1 — Characteristics of Life &amp; Are Viruses Alive? (LS1.1)</span><span class="l-time lt-s">⏱ 35–40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🧬</span><span class="l-name">1.2 — The Four Macromolecules &amp; Organic Chemistry (LS1.2)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🔬</span><span class="l-name">1.3 — Cell Theory, Prokaryotes vs. Eukaryotes, Organelles (LS1.2)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎨</span><span class="l-name">1.4 — Cell Organelle Function Chart &amp; Diagram Activity (LS1.2)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🔬</span><span class="l-name">1.5 — Microscopy Lab: Observing Cell Types (LS1.2)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">1.6 — DNA Structure: Double Helix &amp; Replication (LS1.3)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎨</span><span class="l-name">1.7 — DNA Model Building Activity (LS1.3)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">1.8 — Transcription &amp; Translation: Protein Synthesis (LS1.4)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🧪</span><span class="l-name">1.9 — Codon Wheel Practice Lab (LS1.4)</span><span class="l-time lt-m">⏱ 50 min</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🧪</span><span class="l-name">1.10 — Enzyme Activity Investigation Lab (LS1.5)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">1.11 — Cell Membrane Structure &amp; Transport Types (LS1.7)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🧪</span><span class="l-name">1.12 — Osmosis in Potato Lab (LS1.7)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎯</span><span class="l-name">Unit 1 Review — EOC Standard Check</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Review</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📝</span><span class="l-name">Unit 1 Assessment</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Test</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="u-foot">
+          <span class="u-foot-label">Resources:</span>
+          <a class="btn" href="PASTE-LINK-HERE">📹 Video Playlist</a>
+          <a class="btn" href="PASTE-LINK-HERE">🃏 Quizlet Flashcards</a>
+          <a class="btn" href="https://www.ixl.com/science/skill-plans/tennessee-academic-standards-biology-i">🖥 IXL Practice</a>
+          <a class="btn btn-ghost" href="https://www.flourishkh.com">📖 Open eBook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UNIT 2 ════════════════════════════════════════════ -->
+  <section id="unit2" style="margin-top:2rem;">
+    <div class="sh">
+      <div class="sh-n">02</div>
+      <div class="sh-t"><small>Unit 2 · BIO1.LS1.6 · LS3.1–3 · ETS2.1–3 · Q1 Wks 5–9</small><strong>What Genetic Factors Contribute to Complex Disease?</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="unit-card">
+      <button class="unit-trigger" onclick="tog(this.closest('.unit-card'))">
+        <div class="u-bar u-bar-2"></div>
+        <div class="u-hd">
+          <div class="u-num">2</div>
+          <div class="u-info">
+            <div class="u-std">BIO1.LS1.6 · LS3.1 · LS3.2 · LS3.3 · ETS2.1 · ETS2.2 · ETS2.3</div>
+            <div class="u-title">Heredity &amp; Complex Diseases</div>
+            <div class="u-phenom">🔍 Anchoring Phenomenon: <em>Why do some people get heart disease and not others — and what can we do to prevent it?</em></div>
+          </div>
+          <div class="u-meta">
+            <div class="u-weeks">📅 Q1 · Wks 5–9 · ~23 class days</div>
+            <div class="u-caret">▼ Expand</div>
+          </div>
+        </div>
+      </button>
+      <div class="unit-body">
+        <div class="ub-grid">
+          <div class="ub-col">
+            <div class="ub-head">📌 TN 2022 Standards — Verified</div>
+            <div class="std-list">
+              <div class="std-row"><span class="std-code">LS1.6</span><span class="std-desc">Create a model for the major events of the eukaryotic cell cycle, including mitosis. Compare rates of cell division in various eukaryotic cell types.</span></div>
+              <div class="std-row"><span class="std-code">LS3.1</span><span class="std-desc">Model chromosome progression through meiosis and fertilization; compare and contrast sexual and asexual reproduction including advantages and disadvantages.</span></div>
+              <div class="std-row"><span class="std-code">LS3.2</span><span class="std-desc">Explain how protein formation results in phenotypic variation; discuss how changes in DNA lead to somatic or germ line mutations.</span></div>
+              <div class="std-row"><span class="std-code">LS3.3</span><span class="std-desc">Through pedigree analysis, identify patterns of trait inheritance; use mathematical thinking (Punnett squares) to predict likelihood of trait transmission.</span></div>
+              <div class="std-row"><span class="std-code">ETS2.1</span><span class="std-desc">Obtain, evaluate, and communicate information on how molecular biotechnology may be used in a variety of fields.</span></div>
+              <div class="std-row"><span class="std-code">ETS2.2</span><span class="std-desc">Investigate the means by which karyotypes are utilized in diagnostic medicine.</span></div>
+              <div class="std-row"><span class="std-code">ETS2.3</span><span class="std-desc">Analyze scientific and ethical arguments for pros and cons of a specific biotechnology technique (stem cells, IVF, GMOs).</span></div>
+            </div>
+            <div style="margin-top:1rem;padding:.8rem 1rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;font-size:.75rem;">
+              <div style="font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.5rem;">📚 BSCS Chapters</div>
+              <div style="color:var(--muted);line-height:1.8;">
+                <strong style="color:var(--text2);">Ch. 4</strong> — What is cholesterol, and what could cause it to be high?<br/>
+                <strong style="color:var(--text2);">Ch. 5</strong> — What other genetic factors contribute to heart disease risk?<br/>
+                <strong style="color:var(--text2);">Ch. 6</strong> — What contributes to heart disease and other complex diseases?
+              </div>
+            </div>
+          </div>
+          <div class="ub-col">
+            <div class="ub-head">🗂 Lessons, Labs &amp; Assignments · <span style="font-weight:400;font-style:italic;">times for 90-min block</span></div>
+            <div class="lesson-list">
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.1 — The Eukaryotic Cell Cycle: Interphase &amp; Mitosis (LS1.6)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🔬</span><span class="l-name">2.2 — Mitosis Lab: Onion Root Tips (LS1.6)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.3 — Meiosis I &amp; II: Chromosome Reduction &amp; Variation (LS3.1)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎨</span><span class="l-name">2.4 — Mitosis vs. Meiosis Comparison Activity (LS3.1)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.5 — Mutations: Somatic vs. Germ Line, Point vs. Frameshift (LS3.2)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.6 — Mendel's Laws &amp; Punnett Squares (LS3.3)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📊</span><span class="l-name">2.7 — Mono &amp; Dihybrid Cross Practice (LS3.3)</span><span class="l-time lt-m">⏱ 50 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.8 — Complex Inheritance: Codominance, Sex-Linkage (LS3.3)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📊</span><span class="l-name">2.9 — Pedigree Chart Analysis Activity (LS3.3)</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🔬</span><span class="l-name">2.10 — Karyotype Analysis Lab — Digital (ETS2.2)</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">2.11 — Biotechnology: CRISPR, PCR, Gel Electrophoresis (ETS2.1)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">💬</span><span class="l-name">2.12 — Bioethics Discussion: Should We Edit the Human Genome? (ETS2.3)</span><span class="l-time lt-f">⏱ 30 min post + 3-day async</span><span class="l-type">Discussion</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎯</span><span class="l-name">Unit 2 Review — EOC Standard Check</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Review</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📝</span><span class="l-name">Unit 2 Assessment</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Test</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="u-foot">
+          <span class="u-foot-label">Resources:</span>
+          <a class="btn" href="PASTE-LINK-HERE">📹 Video Playlist</a>
+          <a class="btn" href="PASTE-LINK-HERE">🃏 Quizlet Flashcards</a>
+          <a class="btn" href="https://www.ixl.com/science/skill-plans/tennessee-academic-standards-biology-i">🖥 IXL Practice</a>
+          <a class="btn btn-ghost" href="https://www.flourishkh.com">📖 Open eBook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UNIT 3 ════════════════════════════════════════════ -->
+  <section id="unit3" style="margin-top:2rem;">
+    <div class="sh">
+      <div class="sh-n">03</div>
+      <div class="sh-t"><small>Unit 3 · BIO1.LS1.8–9 · LS2.1–5 · Q2 Wks 10–14</small><strong>How Can We Improve a Food System?</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="unit-card">
+      <button class="unit-trigger" onclick="tog(this.closest('.unit-card'))">
+        <div class="u-bar u-bar-3"></div>
+        <div class="u-hd">
+          <div class="u-num">3</div>
+          <div class="u-info">
+            <div class="u-std">BIO1.LS1.8 · LS1.9 · LS2.1 · LS2.2 · LS2.3 · LS2.4 · LS2.5</div>
+            <div class="u-title">Sustainable Food Systems</div>
+            <div class="u-phenom">🔍 Anchoring Phenomenon: <em>How can we use scientific and social understandings of nutrition and natural resources to improve a food system?</em></div>
+          </div>
+          <div class="u-meta">
+            <div class="u-weeks">📅 Q2 · Wks 10–14 · ~22 class days</div>
+            <div class="u-caret">▼ Expand</div>
+          </div>
+        </div>
+      </button>
+      <div class="unit-body">
+        <div class="ub-grid">
+          <div class="ub-col">
+            <div class="ub-head">📌 TN 2022 Standards — Verified</div>
+            <div class="std-list">
+              <div class="std-row"><span class="std-code">LS1.8</span><span class="std-desc">Create a model of photosynthesis demonstrating the net flow of matter and energy into a cell; explain light energy conversion to stored chemical energy.</span></div>
+              <div class="std-row"><span class="std-code">LS1.9</span><span class="std-desc">Create a model of aerobic respiration demonstrating flow of matter and energy; compare aerobic vs. anaerobic processes and fermentation.</span></div>
+              <div class="std-row"><span class="std-code">LS2.1</span><span class="std-desc">Analyze mathematical representations of population data; predict population size effects from ecosystem disturbances based on interdependent relationships.</span></div>
+              <div class="std-row"><span class="std-code">LS2.2</span><span class="std-desc">Create a model tracking carbon atoms between inorganic and organic molecules; explain human impacts on climate based on this model.</span></div>
+              <div class="std-row"><span class="std-code">LS2.3</span><span class="std-desc">Analyze through research the cycling of matter in the biosphere; explain how biogeochemical cycles are critical for ecosystem function.</span></div>
+              <div class="std-row"><span class="std-code">LS2.4</span><span class="std-desc">Analyze data demonstrating decrease in biomass at successive trophic levels; represent energy and matter transfer in a mathematical model.</span></div>
+              <div class="std-row"><span class="std-code">LS2.5</span><span class="std-desc">Analyze examples of ecological succession; explain order of events responsible for new ecosystem formation following catastrophic disturbances.</span></div>
+            </div>
+            <div style="margin-top:1rem;padding:.8rem 1rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;font-size:.75rem;">
+              <div style="font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.5rem;">📚 BSCS Chapters</div>
+              <div style="color:var(--muted);line-height:1.8;">
+                <strong style="color:var(--text2);">Ch. 7</strong> — What do we need from food?<br/>
+                <strong style="color:var(--text2);">Ch. 8</strong> — Why do some eating patterns require more land than others?<br/>
+                <strong style="color:var(--text2);">Ch. 9</strong> — How can we design effective solutions that improve food systems?
+              </div>
+            </div>
+          </div>
+          <div class="ub-col">
+            <div class="ub-head">🗂 Lessons, Labs &amp; Assignments · <span style="font-weight:400;font-style:italic;">times for 90-min block</span></div>
+            <div class="lesson-list">
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.1 — Photosynthesis: Light-Dependent &amp; Independent Reactions (LS1.8)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🌿</span><span class="l-name">3.2 — Leaf Disk Photosynthesis Rate Lab (LS1.8)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.3 — Aerobic Respiration: Glycolysis, Krebs Cycle, ETC (LS1.9)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🧪</span><span class="l-name">3.4 — Yeast Fermentation Rate Lab (LS1.9)</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📊</span><span class="l-name">3.5 — Photosynthesis &amp; Respiration Comparison Diagram (LS1.8–9)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.6 — Food Webs, Trophic Levels &amp; the 10% Rule (LS2.4)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📊</span><span class="l-name">3.7 — Food Web &amp; Energy Pyramid Construction (LS2.4)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.8 — Population Growth: Exponential vs. Logistic &amp; Carrying Capacity (LS2.1)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📊</span><span class="l-name">3.9 — Population Data Analysis &amp; Graph Interpretation (LS2.1)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.10 — Biogeochemical Cycles: Carbon, Nitrogen, Water (LS2.2–3)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🌍</span><span class="l-name">3.11 — Carbon Cycle &amp; Human Climate Impact Activity (LS2.2)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">3.12 — Ecological Succession: Primary vs. Secondary (LS2.5)</span><span class="l-time lt-s">⏱ 30 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎯</span><span class="l-name">Unit 3 Review — EOC Standard Check</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Review</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📝</span><span class="l-name">Unit 3 Assessment</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Test</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="u-foot">
+          <span class="u-foot-label">Resources:</span>
+          <a class="btn" href="PASTE-LINK-HERE">📹 Video Playlist</a>
+          <a class="btn" href="PASTE-LINK-HERE">🃏 Quizlet Flashcards</a>
+          <a class="btn" href="https://www.ixl.com/science/skill-plans/tennessee-academic-standards-biology-i">🖥 IXL Practice</a>
+          <a class="btn btn-ghost" href="https://www.flourishkh.com">📖 Open eBook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UNIT 4 ════════════════════════════════════════════ -->
+  <section id="unit4" style="margin-top:2rem;">
+    <div class="sh">
+      <div class="sh-n">04</div>
+      <div class="sh-t"><small>Unit 4 · BIO1.LS4.1–3 · Q2 Wks 15–17</small><strong>Why Are So Many Species Declining — and Why Does It Matter?</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="unit-card">
+      <button class="unit-trigger" onclick="tog(this.closest('.unit-card'))">
+        <div class="u-bar u-bar-4"></div>
+        <div class="u-hd">
+          <div class="u-num">4</div>
+          <div class="u-info">
+            <div class="u-std">BIO1.LS4.1 · LS4.2 · LS4.3</div>
+            <div class="u-title">Protection of Biodiversity</div>
+            <div class="u-phenom">🔍 Anchoring Phenomenon: <em>Why are so many species declining now while a few seem to be expanding — and why does it matter?</em></div>
+          </div>
+          <div class="u-meta">
+            <div class="u-weeks">📅 Q2 · Wks 15–17 · ~15 class days</div>
+            <div class="u-caret">▼ Expand</div>
+          </div>
+        </div>
+      </button>
+      <div class="unit-body">
+        <div class="ub-grid">
+          <div class="ub-col">
+            <div class="ub-head">📌 TN 2022 Standards — Verified</div>
+            <div class="std-list">
+              <div class="std-row"><span class="std-code">LS4.1</span><span class="std-desc">Evaluate scientific data from molecular sequences, fossil records, biogeography, and embryology. Identify chronological patterns of change; communicate that evolution is supported by multiple lines of empirical evidence (homologies &amp; common ancestry).</span></div>
+              <div class="std-row"><span class="std-code">LS4.2</span><span class="std-desc">Using a model demonstrating change in allele frequencies over generations, identify causative agents of change (natural selection, genetic drift, gene flow, mutation).</span></div>
+              <div class="std-row"><span class="std-code">LS4.3</span><span class="std-desc">Identify ecosystem services and assess the role of biodiversity in support of these services. Analyze the role human activities have on disruption of these services.</span></div>
+            </div>
+            <div style="margin-top:1rem;padding:.8rem 1rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;font-size:.75rem;">
+              <div style="font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:.5rem;">📚 BSCS Chapters</div>
+              <div style="color:var(--muted);line-height:1.8;">
+                <strong style="color:var(--text2);">Ch. 10</strong> — Why are some species, like coyotes, expanding while most are contracting?<br/>
+                <strong style="color:var(--text2);">Ch. 11</strong> — What explains scientists' concern about a 6th mass extinction?<br/>
+                <strong style="color:var(--text2);">Ch. 12</strong> — How are changes in biodiversity affecting ecosystems — and why does it matter?
+              </div>
+            </div>
+            <div style="margin-top:.85rem;padding:.8rem 1rem;background:var(--warn);border:1px solid var(--warn-bd);border-radius:7px;font-size:.74rem;color:var(--warn-txt);line-height:1.5;">
+              <strong>⏱ Semester Note:</strong> Unit 4 is compressed (~15 days). Prioritize LS4.2 (natural selection model) and LS4.3 (ecosystem services) as the highest-weight EOC standards in this domain.
+            </div>
+          </div>
+          <div class="ub-col">
+            <div class="ub-head">🗂 Lessons, Labs &amp; Assignments · <span style="font-weight:400;font-style:italic;">times for 90-min block</span></div>
+            <div class="lesson-list">
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">4.1 — Four Lines of Evidence for Evolution (LS4.1)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🦴</span><span class="l-name">4.2 — Fossil &amp; Molecular Evidence Analysis Activity (LS4.1)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🌳</span><span class="l-name">4.3 — Reading &amp; Building Phylogenetic Trees / Cladograms (LS4.1)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">4.4 — Mechanisms of Natural Selection &amp; Allele Frequency Change (LS4.2)</span><span class="l-time lt-s">⏱ 40 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🦋</span><span class="l-name">4.5 — Natural Selection Simulation Lab — Peppered Moth / HHMI (LS4.2)</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Lab</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">4.6 — Other Agents of Change: Genetic Drift, Gene Flow, Mutation (LS4.2)</span><span class="l-time lt-s">⏱ 30 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📄</span><span class="l-name">4.7 — Ecosystem Services &amp; the Value of Biodiversity (LS4.3)</span><span class="l-time lt-s">⏱ 35 min</span><span class="l-type">Notes</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🌍</span><span class="l-name">4.8 — Human Threats to Biodiversity: Kelp Forest Case Study (LS4.3)</span><span class="l-time lt-m">⏱ 45 min</span><span class="l-type">Activity</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🌱</span><span class="l-name">4.9 — Conservation Solutions Capstone Project (LS4.3)</span><span class="l-time lt-f">⏱ 3–4 class periods</span><span class="l-type">Project</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">🎯</span><span class="l-name">Unit 4 Review — EOC Standard Check</span><span class="l-time lt-m">⏱ 60 min</span><span class="l-type">Review</span></a>
+              <a class="lesson-row" href="PASTE-LINK-HERE"><span class="l-icon">📝</span><span class="l-name">Unit 4 Assessment</span><span class="l-time lt-l">⏱ Full Period</span><span class="l-type">Test</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="u-foot">
+          <span class="u-foot-label">Resources:</span>
+          <a class="btn" href="PASTE-LINK-HERE">📹 Video Playlist</a>
+          <a class="btn" href="PASTE-LINK-HERE">🃏 Quizlet Flashcards</a>
+          <a class="btn" href="https://www.hhmi.org/biointeractive">🌿 HHMI BioInteractive</a>
+          <a class="btn btn-ghost" href="https://www.flourishkh.com">📖 Open eBook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EOC PREP ══════════════════════════════════════════ -->
+  <section id="eoc" style="margin-top:3rem;">
+    <div class="sh">
+      <div class="sh-n">05</div>
+      <div class="sh-t"><small>Test Readiness</small><strong>EOC / Biology Competency Prep</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <p style="color:var(--muted);font-size:.84rem;margin:0 0 1.1rem;">Organized by 2022 TN Biology 1 standard domain. Use these all year — not just before the test!</p>
+    <div class="eoc-grid">
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">🧬</div><div class="eoc-title">BIO1.LS1 — Molecules to Organisms</div></div><div class="eoc-desc">Cells, biomolecules, DNA, protein synthesis, transport, photosynthesis, respiration, mitosis. Standards LS1.1–LS1.9.</div><a href="PASTE-LINK-HERE" class="eoc-link">Practice LS1 Questions →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">🌿</div><div class="eoc-title">BIO1.LS2 — Ecosystems</div></div><div class="eoc-desc">Population dynamics, biogeochemical cycles, trophic levels, ecological succession. Standards LS2.1–LS2.5.</div><a href="PASTE-LINK-HERE" class="eoc-link">Practice LS2 Questions →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">🧪</div><div class="eoc-title">BIO1.LS3 — Heredity</div></div><div class="eoc-desc">Meiosis, mutations, pedigrees, Punnett squares, complex inheritance. Standards LS3.1–LS3.3.</div><a href="PASTE-LINK-HERE" class="eoc-link">Practice LS3 Questions →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">🦕</div><div class="eoc-title">BIO1.LS4 — Biological Change</div></div><div class="eoc-desc">Evolution evidence, allele frequency, natural selection, ecosystem services. Standards LS4.1–LS4.3.</div><a href="PASTE-LINK-HERE" class="eoc-link">Practice LS4 Questions →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">⚙️</div><div class="eoc-title">BIO1.ETS2 — Biotechnology</div></div><div class="eoc-desc">Molecular biotech, karyotypes in medicine, ethical arguments. Standards ETS2.1–ETS2.3.</div><a href="PASTE-LINK-HERE" class="eoc-link">Practice ETS2 Questions →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">📋</div><div class="eoc-title">Full Practice EOC</div></div><div class="eoc-desc">Timed, full-length practice test in TN Biology EOC format. All standard domains included.</div><a href="PASTE-LINK-HERE" class="eoc-link">Take Full Practice EOC →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">📖</div><div class="eoc-title">Vocabulary Master List</div></div><div class="eoc-desc">Every key term from all four units organized by standard. Quizlet flashcard set included.</div><a href="PASTE-LINK-HERE" class="eoc-link">Open Vocabulary List →</a></div>
+      <div class="eoc-card"><div class="eoc-hd"><div class="eoc-icon">🖥</div><div class="eoc-title">IXL — Standard-by-Standard</div></div><div class="eoc-desc">Practice each TN Bio 1 standard individually and track your SmartScore. Aligned to 2022 TN standards.</div><a href="https://www.ixl.com/science/skill-plans/tennessee-academic-standards-biology-i" class="eoc-link">Go to IXL Bio 1 →</a></div>
+    </div>
+  </section>
+
+  <!-- ══ PACING ════════════════════════════════════════════ -->
+  <section id="pacing" style="margin-top:3rem;">
+    <div class="sh">
+      <div class="sh-n">06</div>
+      <div class="sh-t"><small>1 Semester · 2 Quarters · 18 Weeks · 90-Min Block</small><strong>Semester Pacing Guide</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="warn-box">
+      <strong>⏱ Semester Compression Note:</strong> BSCS Understanding for Life is designed as a full-year program. Fitting all 4 units into 18 weeks (~90 instructional days) requires deliberate pacing. Unit 4 is the most compressed. Lean on the BSCS Flourish teacher pacing tools and prioritize highest-weighted EOC standards when time is short.
+    </div>
+    <div class="pace-wrap">
+      <table class="pace-table">
+        <thead>
+          <tr>
+            <th style="width:14%;">Weeks</th>
+            <th style="width:10%;">~Days</th>
+            <th style="width:26%;">BSCS Unit &amp; Anchoring Question</th>
+            <th style="width:22%;">TN 2022 Standards</th>
+            <th style="width:28%;">Key Assessments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="q-hdr"><td colspan="5">📅 QUARTER 1 — Weeks 1–9 · ~45 Instructional Days</td></tr>
+          <tr>
+            <td>Wks 1–4</td><td>~20 days</td>
+            <td><span class="pd"></span><strong>Unit 1</strong> — How can bacterial infections make us so sick?</td>
+            <td style="font-family:monospace;font-size:.74rem;line-height:1.7;">BIO1.LS1.1<br/>BIO1.LS1.2<br/>BIO1.LS1.3<br/>BIO1.LS1.4<br/>BIO1.LS1.5<br/>BIO1.LS1.7</td>
+            <td style="font-size:.76rem;">Virus CER · Macromolecule ID · Microscopy Lab · DNA Model · Codon Wheel Lab · Enzyme Lab · Osmosis Lab · Unit 1 Test</td>
+          </tr>
+          <tr>
+            <td>Wks 5–9</td><td>~23 days</td>
+            <td><span class="pd pd-2"></span><strong>Unit 2</strong> — What genetic factors contribute to complex disease?</td>
+            <td style="font-family:monospace;font-size:.74rem;line-height:1.7;">BIO1.LS1.6<br/>BIO1.LS3.1<br/>BIO1.LS3.2<br/>BIO1.LS3.3<br/>BIO1.ETS2.1<br/>BIO1.ETS2.2<br/>BIO1.ETS2.3</td>
+            <td style="font-size:.76rem;">Mitosis Lab · Meiosis Activity · Punnett Practice · Pedigree Analysis · Karyotype Lab · Bioethics Discussion · Unit 2 Test</td>
+          </tr>
+          <tr class="q-hdr"><td colspan="5">📅 QUARTER 2 — Weeks 10–18 · ~45 Instructional Days</td></tr>
+          <tr>
+            <td>Wks 10–14</td><td>~22 days</td>
+            <td><span class="pd pd-3"></span><strong>Unit 3</strong> — How can we improve a food system?</td>
+            <td style="font-family:monospace;font-size:.74rem;line-height:1.7;">BIO1.LS1.8<br/>BIO1.LS1.9<br/>BIO1.LS2.1<br/>BIO1.LS2.2<br/>BIO1.LS2.3<br/>BIO1.LS2.4<br/>BIO1.LS2.5</td>
+            <td style="font-size:.76rem;">Leaf Disk Lab · Fermentation Lab · Energy Pyramid Activity · Population Graph Analysis · Carbon Cycle Model · Succession Case Study · Unit 3 Test</td>
+          </tr>
+          <tr>
+            <td>Wks 15–17</td><td>~15 days</td>
+            <td><span class="pd pd-4"></span><strong>Unit 4</strong> — Why are species declining and why does it matter?</td>
+            <td style="font-family:monospace;font-size:.74rem;line-height:1.7;">BIO1.LS4.1<br/>BIO1.LS4.2<br/>BIO1.LS4.3</td>
+            <td style="font-size:.76rem;">Evolution Evidence Activity · Cladogram Activity · Natural Selection Simulation Lab · Kelp Forest Case Study · Capstone Project · Unit 4 Test</td>
+          </tr>
+          <tr>
+            <td>Wk 18</td><td>~5 days</td>
+            <td colspan="2" style="font-style:italic;">🎯 EOC Review — All Standards: LS1 · LS2 · LS3 · LS4 · ETS2</td>
+            <td style="font-size:.76rem;">IXL Standard Review · Vocabulary Quizlet · Full Practice EOC · EOC Exam</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note note-green">
+      <strong>📌 90-Minute Block Advantage:</strong> Each 90-minute period is equivalent to roughly two traditional class periods. Labs and their analysis can usually be completed in a single block — use this to avoid losing continuity between days.
+    </div>
+  </section>
+
+  <!-- ══ LINK GUIDE ════════════════════════════════════════ -->
+  <section id="guide" style="margin-top:3rem;">
+    <div class="sh">
+      <div class="sh-n">07</div>
+      <div class="sh-t"><small>For the Teacher</small><strong>🔗 How to Make Every Button Work</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <p style="color:var(--muted);font-size:.84rem;margin:0 0 1.2rem;line-height:1.65;">Every button showing <strong style="color:var(--text);">PASTE-LINK-HERE</strong> needs a real URL. Here is exactly what each one needs and how to get it.</p>
+
+    <div class="guide-card">
+      <div class="guide-num">1</div>
+      <div class="guide-content">
+        <div class="guide-title">Course Syllabus</div>
+        <div class="guide-desc">Upload your syllabus PDF to GitHub. Its URL is automatic once uploaded.</div>
+        <code class="guide-url">https://lhoward26.github.io/bio1-patriots/syllabus.pdf</code>
+        <div class="guide-step">⚙ Upload syllabus.pdf to GitHub → replace PASTE-SYLLABUS-LINK-HERE</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">2</div>
+      <div class="guide-content">
+        <div class="guide-title">Assignments, Grades &amp; Discussions</div>
+        <div class="guide-desc">In Canvas, navigate to each section and copy the URL from your browser bar.</div>
+        <code class="guide-url">https://yourschool.instructure.com/courses/XXXXX/assignments</code>
+        <div class="guide-step">⚙ Canvas → Assignments / Grades / Discussions → copy URL → paste into index.html</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">3</div>
+      <div class="guide-content">
+        <div class="guide-title">Open Module 1 / 2 / 3 / 4</div>
+        <div class="guide-desc">In Canvas, go to Modules. Click the module title. Copy the URL — it ends in #module_XXXXX.</div>
+        <code class="guide-url">https://yourschool.instructure.com/courses/XXXXX/modules#module_XXXXX</code>
+        <div class="guide-step">⚙ Get a separate URL for each of the 4 unit modules</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">4</div>
+      <div class="guide-content">
+        <div class="guide-title">Each Lesson / Lab / Activity Row</div>
+        <div class="guide-desc">Build the Canvas item first (Page, Assignment, or Quiz). Open it. Copy its URL. Each row needs its own unique link.</div>
+        <code class="guide-url">https://yourschool.instructure.com/courses/XXXXX/pages/lesson-name</code>
+        <div class="guide-step">⚙ Build in Canvas → open → copy URL → find row in index.html → replace PASTE-LINK-HERE</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">5</div>
+      <div class="guide-content">
+        <div class="guide-title">Video Playlists (YouTube)</div>
+        <div class="guide-desc">Create a YouTube playlist per unit. Open playlist → Share → Copy Link.</div>
+        <code class="guide-url">https://www.youtube.com/playlist?list=XXXXXXXXXXXXXXXXX</code>
+        <div class="guide-step">⚙ Create a playlist for each of the 4 units separately</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="guide-num">6</div>
+      <div class="guide-content">
+        <div class="guide-title">Quizlet Flashcard Sets</div>
+        <div class="guide-desc">Create a Quizlet set per unit at quizlet.com. Open your set. Copy URL from browser.</div>
+        <code class="guide-url">https://quizlet.com/XXXXXXXXX/unit-1-biology-flash-cards/</code>
+        <div class="guide-step">⚙ Create 4 sets (one per unit) + 1 master vocabulary set for EOC</div>
+      </div>
+    </div>
+    <div class="note note-green">
+      <strong>🔑 Golden Rule:</strong> Always build the Canvas item <em>first</em>, then come back and link it. Start with the 5 always-available links (syllabus, eBook, assignments, grades, discussion) in Week 1, then add unit links one by one as you build each module.
+    </div>
+  </section>
+
+  <!-- ══ TEACHER HUB ═══════════════════════════════════════ -->
+  <section id="teacher" style="margin-top:3rem;">
+    <div class="sh">
+      <div class="sh-n">08</div>
+      <div class="sh-t"><small>Instructor Resources</small><strong>Teacher Planning Hub</strong></div>
+      <div class="sh-line"></div>
+    </div>
+    <div class="teacher-hub">
+      <div class="th-head">
+        <span class="th-badge">🔑 Teacher Only — Unpublished in Canvas Module 6</span>
+        <span class="th-title">Lesson Planning, Standards Fidelity &amp; Admin Resources</span>
+      </div>
+      <div class="th-grid">
+        <div class="th-card"><div class="th-card-icon">📐</div><div class="th-card-title">Standards Fidelity Tracker</div><div class="th-card-desc">Every lesson mapped to exact 2022 TN Bio 1 standard codes. Admin-ready. <a href="PASTE-LINK-HERE">Open Tracker →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">📅</div><div class="th-card-title">5E / AIL Lesson Plan Templates</div><div class="th-card-desc">Lesson plans formatted to BSCS Anchored Inquiry Learning model. <a href="PASTE-LINK-HERE">View Templates →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">📊</div><div class="th-card-title">Class Performance / Data Wall</div><div class="th-card-desc">Track class averages by standard after each assessment. <a href="PASTE-LINK-HERE">Open Data →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">🔬</div><div class="th-card-title">Digital Lab Protocols</div><div class="th-card-desc">All lab protocols and safety acknowledgment forms. <a href="PASTE-LINK-HERE">Open Labs →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">📝</div><div class="th-card-title">Assessment Bank</div><div class="th-card-desc">Unit tests, quizzes, EOC-style questions organized by standard. <a href="PASTE-LINK-HERE">Open Bank →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">🎓</div><div class="th-card-title">Differentiation Resources</div><div class="th-card-desc">Scaffolded notes and extension problems per unit and standard. <a href="PASTE-LINK-HERE">View →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">🌐</div><div class="th-card-title">Flourish Teacher Dashboard</div><div class="th-card-desc">BSCS teacher edition, pacing, and digital lesson resources. <a href="https://www.flourishkh.com" target="_blank">Login to Flourish →</a></div></div>
+        <div class="th-card"><div class="th-card-icon">📋</div><div class="th-card-title">2022 TN Standards Document</div><div class="th-card-desc">Official TN Science Academic Standards — Biology 1 codes start with BIO1. <a href="https://www.tn.gov/education/districts/academic-standards/science-standards.html" target="_blank">Open TN Standards →</a></div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>Biology 1 — Jefferson County High School Patriots</strong> · Jefferson County, Tennessee<br/>
+  BSCS <em>Understanding for Life</em> (Kendall Hunt) · 2022 TN Science Academic Standards · BIO1.LS1 · LS2 · LS3 · LS4 · ETS2 · 1 Semester · 18 Weeks · 90-Min Block
+</footer>
+
+<script>
+  function tog(card){
+    card.classList.toggle('open');
+    const c=card.querySelector('.u-caret');
+    c.textContent=card.classList.contains('open')?'▲ Collapse':'▼ Expand';
+  }
+  function go(id,btn){
+    const el=document.getElementById(id);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+    if(btn)btn.classList.add('on');
+  }
+  const ids=['home','unit1','unit2','unit3','unit4','eoc','pacing','guide','teacher'];
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    ids.forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-80)cur=id;});
+    document.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',ids[i]===cur));
+  },{passive:true});
+</script>
+</body>
+</html>
